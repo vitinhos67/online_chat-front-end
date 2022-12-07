@@ -1,45 +1,35 @@
 <template>
-
-
-<NavBar />
+  <NavBar />
 
   <div class="chat">
-    <div class="messages">
-
-    </div>
-    <input type="text" name="message" v-model="message">
+    <div class="messages"></div>
+    <input type="text" name="message" v-model="message" />
     <button v-on:click="echo">Enviar Mensagem</button>
   </div>
-
-
-
 </template>
 
 <script>
-
 import NavBar from "./components/NavBar.vue";
 import Socket from "./services/socketio.service";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    NavBar
+    NavBar,
   },
   data() {
     return {
-
       message: "",
-      errors: []
-
-    }
-    },
+      errors: [],
+    };
+  },
   methods: {
-    echo () {
+    echo() {
       const socket = Socket.connection();
 
-      console.log(socket)
-      if(!this.message) {
-        return 
+      console.log(socket);
+      if (!this.message) {
+        return;
       }
 
       const date = new Date();
@@ -47,51 +37,45 @@ export default {
       const created_at = {
         year: date.getFullYear(),
         month: date.getMonth(),
-        hours: `${date.getHours()}:${date.getMinutes()}`
-      }
+        hours: `${date.getHours()}:${date.getMinutes()}`,
+      };
       socket.emit("message", {
         message: this.message,
         author: "Victor",
-        created_at
-      })
-
-    }
+        created_at,
+      });
+    },
   },
-  beforeCreate() {
-
-  }
-
-}
+  beforeCreate() {},
+};
 </script>
 
 <style>
+html,
+body {
+  height: 100%;
+}
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-html, body {
-    height: 100%;
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
 .chat {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    clear: both;
-  }
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  clear: both;
+}
 
 .messages {
-    width: 600px;
-    height: 400px;
-    margin: 20px 0;
-    border: 1px solid #ddd;
-    padding: 20px;
-  }
-
+  width: 600px;
+  height: 400px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  padding: 20px;
+}
 </style>
