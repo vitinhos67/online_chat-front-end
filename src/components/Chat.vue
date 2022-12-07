@@ -1,21 +1,21 @@
 <template>
-  <NavBar />
-
   <div class="chat">
     <div class="messages"></div>
     <input type="text" name="message" v-model="message" />
     <button v-on:click="echo">Enviar Mensagem</button>
   </div>
-</template>
 
+</template>
 <script>
-import NavBar from "./components/NavBar.vue";
-import Socket from "./services/socketio.service";
+
+import Socket from "../services/socketio.service";
+
+
 
 export default {
   name: "App",
   components: {
-    NavBar,
+  
   },
   data() {
     return {
@@ -25,25 +25,8 @@ export default {
   },
   methods: {
     echo() {
+      // eslint-disable-next-line no-unused-vars
       const socket = Socket.connection();
-
-      console.log(socket);
-      if (!this.message) {
-        return;
-      }
-
-      const date = new Date();
-
-      const created_at = {
-        year: date.getFullYear(),
-        month: date.getMonth(),
-        hours: `${date.getHours()}:${date.getMinutes()}`,
-      };
-      socket.emit("message", {
-        message: this.message,
-        author: "Victor",
-        created_at,
-      });
     },
   },
   beforeCreate() {},
