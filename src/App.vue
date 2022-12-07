@@ -1,26 +1,97 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+
+<NavBar />
+
+  <div class="chat">
+    <div class="messages">
+
+    </div>
+    <input type="text" name="message" v-model="message">
+    <button v-on:click="echo">Enviar Mensagem</button>
+  </div>
+
+
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import NavBar from "./components/NavBar.vue";
+import Socket from "./services/socketio.service";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NavBar
+  },
+  data() {
+    return {
+
+      message: "",
+      errors: []
+
+    }
+    },
+  methods: {
+    echo () {
+      const socket = Socket.connection();
+
+      console.log(socket)
+      if(!this.message) {
+        return 
+      }
+
+      const date = new Date();
+
+      const created_at = {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        hours: `${date.getHours()}:${date.getMinutes()}`
+      }
+      socket.emit("message", {
+        message: this.message,
+        author: "Victor",
+        created_at
+      })
+
+    }
+  },
+  beforeCreate() {
+
   }
+
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
+
+html, body {
+    height: 100%;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+.chat {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    clear: both;
+  }
+
+.messages {
+    width: 600px;
+    height: 400px;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    padding: 20px;
+  }
+
 </style>
