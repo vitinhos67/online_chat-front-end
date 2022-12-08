@@ -13,8 +13,13 @@ const routes = [
   },
   {
     path: "/login",
-    name: "signin/signup",
-    component: () => import("../components/Login-Register.vue"),
+    name: "signin",
+    component: () => import("../components/LoginVue.vue"),
+  },
+  {
+    path: "/register",
+    name: "signup",
+    component: () => import("../components/RegisterVue.vue"),
   },
 ];
 

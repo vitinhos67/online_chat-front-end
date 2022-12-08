@@ -5,7 +5,8 @@
       <span class="username-nav-bar">Username-example</span>
     </div>
     <div v-else class="nav-bar-login">
-      <RouterLink to="/login"> Signin/Signup </RouterLink>
+      <RouterLink to="/login"> Login </RouterLink>
+      <RouterLink to="/register"> Registrar </RouterLink>
     </div>
 
     <br class="clear" />
@@ -16,8 +17,11 @@
 export default {
   data() {
     return {
-      user: "",
+
     };
+  },
+  beforeCreate() {
+    console.log(this.pathHref, this.path);
   },
 };
 </script>
