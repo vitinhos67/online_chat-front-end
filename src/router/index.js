@@ -3,19 +3,14 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: () => import("../views/App.vue"),
-  }, 
-  {
-    path: '/chat',
     name: "chat",
-    component: () => import('../components/Chat.vue')
-  }, {
+    component: () => import("../components/Chat.vue"),
+  },
+  {
     path: "/login",
     name: "signin/signup",
-    component: () => import('../components/Login-Register.vue')
-  }
- 
+    component: () => import("../components/Login-Register.vue"),
+  },
 ];
 
 const router = createRouter({

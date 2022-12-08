@@ -1,15 +1,9 @@
 <template>
-
-    <div> ROTA DE LOGIN</div>
+  <div>ROTA DE LOGIN</div>
 </template>
 <script>
-
-
 export default {
-components: {
-
-}
-}
+  components: {},
+};
 </script>
-<style>
-</style>
+<style></style>
