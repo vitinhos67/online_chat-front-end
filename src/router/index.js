@@ -3,8 +3,13 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "chat",
+    name: "chatHome",
     component: () => import("../components/Chat.vue"),
+  },
+  {
+    path: "/chat/:id",
+    name: "chat",
+    component: () => import("../components/ConnectedChat.vue"),
   },
   {
     path: "/login",
