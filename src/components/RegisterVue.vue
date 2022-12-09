@@ -13,7 +13,7 @@
             <br />
             <span class="subtitle">PASSWORD:</span>
             <br />
-            <input type="password" name="password" v-model="password"  />
+            <input type="password" name="password" v-model="password" />
             <br />
             <span class="subtitle">EMAIL:</span>
             <br />
@@ -31,40 +31,38 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
-        return {
-          username: "",
-          password: "",
-          email: ""
-    }
+    return {
+      username: "",
+      password: "",
+      email: "",
+    };
   },
   components: {},
-  methods : {
-            async onSubmit(e){
-                e.preventDefault()
-                if(!this.password || !this.username || !this.email){
-                    alert("Por favor, verifique os dados")
-                    return
-                }
+  methods: {
+    async onSubmit(e) {
+      e.preventDefault();
+      if (!this.password || !this.username || !this.email) {
+        alert("Por favor, verifique os dados");
+        return;
+      }
 
-                const response = await axios({
-                  method:"POST",
-                  url: "http://localhost:3000/user",
-                  data: {
-                    email: this.email,
-                    password: this.password,
-                    username: this.username
-                  }
-                  
-                })
+      const response = await axios({
+        method: "POST",
+        url: "http://localhost:3000/user",
+        data: {
+          email: this.email,
+          password: this.password,
+          username: this.username,
+        },
+      });
 
-                console.log(response)
-
-            }
-        }
+      console.log(response);
+    },
+  },
 };
 </script>
 <style>

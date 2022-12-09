@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <div class="users" :key="user" v-for="user of users">
+    <div class="users">
       <div>
         <input type="text" placeholder="Buscar por usuario..." />
         <br />
         <h3 style="margin-top: 10px">Usuarios Conectados:</h3>
       </div>
 
-      <div class="each-users">
-        <RouterLink to="/chat/4">
+      <div class="each-users" :key="user" v-for="user of users">
+        <RouterLink v-bind:to="href_user_chat(user.id)">
           <div class="each-user-grid-image">
             <img
               class="image-user"
@@ -51,7 +51,7 @@
             name="message"
             v-model="message"
           />
-          <button class="send-message-button" v-on:click="echo">
+          <button @click="onSubmit" class="send-message-button">
             Enviar Mensagem
           </button>
         </form>
@@ -66,10 +66,22 @@ export default {
   data() {
     return {
       message: "",
+      href_user_chat: (id) => `/chat/${id}`,
       users: [
         {
           username: "Amante dos gatos",
           id: 3434,
+          external_urls: {
+            images: [
+              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.imgur.com%2FkT3j3Lf.jpg&f=1&nofb=1&ipt=42823d5716256710503f124330e1c10d021b12e3205d697ed2759d6249b4ade7&ipo=images",
+            ],
+          },
+          access_token: "token",
+          description: `Gosto de gatos.`,
+        },
+        {
+          username: "Amante dos gatos",
+          id: 3435,
           external_urls: {
             images: [
               "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.imgur.com%2FkT3j3Lf.jpg&f=1&nofb=1&ipt=42823d5716256710503f124330e1c10d021b12e3205d697ed2759d6249b4ade7&ipo=images",
@@ -85,6 +97,9 @@ export default {
   methods: {
     echo() {
       // eslint-disable-next-line no-unused-vars
+    },
+    onSubmit(e) {
+      e.preventDefault();
     },
   },
   beforeCreate() {},
@@ -127,20 +142,18 @@ body {
 }
 
 .each-users {
-  border: 1px solid red;
+  border-radius: 1px;
   width: 100%;
   height: 100px;
 }
 
 .each-user-grid-image {
-  border: 1px solid red;
   height: 100%;
   float: left;
   width: 80px;
 }
 
 .each-user-grid-text {
-  border: 1px solid red;
   height: 100%;
   width: 108;
 }

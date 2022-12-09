@@ -16,9 +16,7 @@
 <script>
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   beforeCreate() {
     console.log(this.pathHref, this.path);

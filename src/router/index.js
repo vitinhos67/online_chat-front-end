@@ -8,8 +8,13 @@ const routes = [
   },
   {
     path: "/chat/:id",
-    name: "chat",
+    name: "chatConnected",
     component: () => import("../components/ConnectedChat.vue"),
+  },
+  {
+    path: "/chat",
+    name: "chat",
+    component: () => import("../components/Chat.vue"),
   },
   {
     path: "/login",
