@@ -2,10 +2,11 @@
   <nav id="nav-bar">
     <div class="nav-bar-user" v-if="user">
       <img class="user-img" src="../assets/user.png" alt="User" />
-      <span class="username-nav-bar">Username-example</span>
-      <RouterLink to="/login"> Chat </RouterLink>
+      <span class="username-nav-bar">{{ user.username }}</span>
+
+      <span>Sair</span>
     </div>
-    
+
     <div v-else class="nav-bar-login">
       <RouterLink to="/"> Chat </RouterLink>
       <RouterLink to="/login"> Login </RouterLink>
@@ -19,11 +20,13 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      user: localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user")).user
+        : "",
+    };
   },
-  beforeCreate() {
-    console.log(this.pathHref, this.path);
-  },
+  beforeCreate() {},
 };
 </script>
 

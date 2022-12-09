@@ -3,20 +3,20 @@
     <div class="form-container">
       <div class="login-page">
         <div class="form">
-          <form class="login-form">
+          <form class="login-form" @submit="loginUser">
             <h1>Login</h1>
             <br />
             <br />
-            <span class="subtitle">USERNAME:</span>
+            <span class="subtitle">EMAIL:</span>
             <br />
-            <input type="text" name="username" value="" />
+            <input type="text" name="email" v-model="email" />
             <br />
             <span class="subtitle">PASSWORD:</span>
             <br />
-            <input type="password" name="password" value="" />
+            <input type="password" name="password" v-model="password" />
             <br />
             <br />
-            <input type="submit" value="SUBMIT" class="submit-btn" />
+            <input v-on:click="loginUser" value="SUBMIT" class="submit-btn" />
             <span class="change-form-btn">
               <a href="/register">Registre aqui</a>
             </span>
@@ -27,8 +27,36 @@
   </div>
 </template>
 <script>
+import login from "../services/login.service";
+
 export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+      href_user_chat: (id) => `/chat/${id}`
+    };
+  },
   components: {},
+  methods: {
+    async loginUser() {
+      try {
+        if (!this.password || !this.email) {
+          return;
+        }
+
+        const result = await login({
+          password: this.password,
+          email: this.email,
+        });
+
+        const dataToJSON = JSON.stringify(result);
+        localStorage.setItem("user", dataToJSON);
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+  },
 };
 </script>
 <style>

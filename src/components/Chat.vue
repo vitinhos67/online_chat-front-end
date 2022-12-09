@@ -52,7 +52,7 @@
             class="send-message-input"
             type="text"
             name="message"
-            v-model="messageInput"
+            v-model="ms"
           />
           <button @click="onSubmit" class="send-message-button">
             Enviar Mensagem
@@ -61,56 +61,58 @@
       </div>
     </div>
   </div>
-
-  <p></p>
 </template>
 <script>
+
+
 export default {
   name: "chatHome",
   components: {},
   props: {
     onSubmit: {
       type: Function,
-      default: (e) =>{
-      e.preventDefault();
+      default: (e) => {
+        e.preventDefault();
 
-        alert('ok')
-    } 
+        alert("ok");
+      },
     },
     message: {
-      type: String
-    }
+      type: String,
+    },
   },
-  
+
   data() {
     return {
-      messageInput: "",
+      ms: this.message,
       from_user: "victor",
       href_user_chat: (id) => `/chat/${id}`,
       user: {
-        username: 'test',
-        id:75,
+        username: "test",
+        id: 75,
         description: "Outro teste",
         external_urls: {
-        images: ['https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images']
-      }
-    },
-      users:  [{
-        username: 'test',
-        id:75,
-        description: "Outro teste",
-        external_urls: {
-        images: ['https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images']
-      }
-    }],
+          images: [
+            "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images",
+          ],
+        },
+      },
+      users: [
+        {
+          username: "test",
+          id: 75,
+          description: "Outro teste",
+          external_urls: {
+            images: [
+              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images",
+            ],
+          },
+        },
+      ],
       errors: [],
     };
   },
-  methods: {
-
-  },
-  computed: {
-  }
+  computed: {},
 };
 </script>
 
