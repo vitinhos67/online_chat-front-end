@@ -3,8 +3,11 @@
     <div class="nav-bar-user" v-if="user">
       <img class="user-img" src="../assets/user.png" alt="User" />
       <span class="username-nav-bar">Username-example</span>
+      <RouterLink to="/login"> Chat </RouterLink>
     </div>
+    
     <div v-else class="nav-bar-login">
+      <RouterLink to="/"> Chat </RouterLink>
       <RouterLink to="/login"> Login </RouterLink>
       <RouterLink to="/register"> Registrar </RouterLink>
     </div>

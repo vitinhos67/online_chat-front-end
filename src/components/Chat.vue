@@ -52,7 +52,7 @@
             class="send-message-input"
             type="text"
             name="message"
-            v-model="message"
+            v-model="messageInput"
           />
           <button @click="onSubmit" class="send-message-button">
             Enviar Mensagem
@@ -61,18 +61,31 @@
       </div>
     </div>
   </div>
+
+  <p></p>
 </template>
 <script>
-// eslint-disable-next-line no-unused-vars
-import catchAllUsersOn from "../services/allUsersOn.service";
-import $ from "jquery";
-
 export default {
   name: "chatHome",
   components: {},
+  props: {
+    onSubmit: {
+      type: Function,
+      default: (e) =>{
+      e.preventDefault();
+
+        alert('ok')
+    } 
+    },
+    message: {
+      type: String
+    }
+  },
+  
   data() {
     return {
-      message: "",
+      messageInput: "",
+      from_user: "victor",
       href_user_chat: (id) => `/chat/${id}`,
       user: {
         username: 'test',
@@ -94,28 +107,10 @@ export default {
     };
   },
   methods: {
-    echo() {
-    
-    },
-    onSubmit(e) {
-      e.preventDefault();
-     
-      const element = `<div class='content'>
-        <span class='strong-content'>${this.user.username} </span> : ${this.message} 
-        <br /> 
-        </div>`
 
-       $(".box-messages").append(element)
-
-
-      /**
-       * id de quem manda
-       * do id para quem vai
-       * mensagem
-       * 
-       */
-    },
   },
+  computed: {
+  }
 };
 </script>
 
