@@ -25,7 +25,10 @@
     </div>
     <div class="messages">
       <div class="box-messages">
-        <div class="buttons-link">
+        <div v-if="user">
+          <p>Voce esta conectado</p>
+        </div>
+        <div class="buttons-link" v-else>
           <h1 class="login-message-h1">
             Faça seu cadastro para conversar com milhares de pessoas todos os
             dias.
@@ -60,6 +63,10 @@
   </div>
 </template>
 <script>
+// eslint-disable-next-line no-unused-vars
+import catchAllUsersOn from "../services/allUsersOn.service";
+import $ from "jquery";
+
 export default {
   name: "chatHome",
   components: {},
@@ -67,42 +74,48 @@ export default {
     return {
       message: "",
       href_user_chat: (id) => `/chat/${id}`,
-      users: [
-        {
-          username: "Amante dos gatos",
-          id: 3434,
-          external_urls: {
-            images: [
-              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.imgur.com%2FkT3j3Lf.jpg&f=1&nofb=1&ipt=42823d5716256710503f124330e1c10d021b12e3205d697ed2759d6249b4ade7&ipo=images",
-            ],
-          },
-          access_token: "token",
-          description: `Gosto de gatos.`,
-        },
-        {
-          username: "Amante dos gatos",
-          id: 3435,
-          external_urls: {
-            images: [
-              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.imgur.com%2FkT3j3Lf.jpg&f=1&nofb=1&ipt=42823d5716256710503f124330e1c10d021b12e3205d697ed2759d6249b4ade7&ipo=images",
-            ],
-          },
-          access_token: "token",
-          description: `Gosto de gatos.`,
-        },
-      ],
+      user: {
+        username: 'test',
+        id:75,
+        description: "Outro teste",
+        external_urls: {
+        images: ['https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images']
+      }
+    },
+      users:  [{
+        username: 'test',
+        id:75,
+        description: "Outro teste",
+        external_urls: {
+        images: ['https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images']
+      }
+    }],
       errors: [],
     };
   },
   methods: {
     echo() {
-      // eslint-disable-next-line no-unused-vars
+    
     },
     onSubmit(e) {
       e.preventDefault();
+     
+      const element = `<div class='content'>
+        <span class='strong-content'>${this.user.username} </span> : ${this.message} 
+        <br /> 
+        </div>`
+
+       $(".box-messages").append(element)
+
+
+      /**
+       * id de quem manda
+       * do id para quem vai
+       * mensagem
+       * 
+       */
     },
   },
-  beforeCreate() {},
 };
 </script>
 
@@ -141,6 +154,12 @@ body {
   position: absolute;
 }
 
+.content {
+  font-size: 20px;
+}
+.strong-content {
+  font-weight: bold;
+}
 .each-users {
   border-radius: 1px;
   width: 100%;

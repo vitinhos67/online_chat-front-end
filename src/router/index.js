@@ -2,17 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
-    path: "/",
-    name: "chatHome",
-    component: () => import("../components/Chat.vue"),
-  },
-  {
     path: "/chat/:id",
     name: "chatConnected",
     component: () => import("../components/ConnectedChat.vue"),
   },
   {
-    path: "/chat",
+    path: "/",
     name: "chat",
     component: () => import("../components/Chat.vue"),
   },
