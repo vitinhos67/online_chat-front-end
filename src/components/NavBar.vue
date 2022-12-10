@@ -12,7 +12,6 @@
       <RouterLink to="/login"> Login </RouterLink>
       <RouterLink to="/register"> Registrar </RouterLink>
     </div>
-
     <br class="clear" />
   </nav>
 </template>
@@ -21,12 +20,11 @@
 export default {
   data() {
     return {
-      user: localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user")).user
-        : "",
+      user: localStorage.getItem('user') ? 
+      JSON.parse(localStorage.getItem('user')).user 
+      : ''
     };
-  },
-  beforeCreate() {},
+  }
 };
 </script>
 

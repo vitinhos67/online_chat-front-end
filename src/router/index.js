@@ -21,6 +21,10 @@ const routes = [
     name: "signup",
     component: () => import("../components/RegisterVue.vue"),
   },
+  {
+    path: "/chat",
+    redirect: '/'
+  },
 ];
 
 const router = createRouter({

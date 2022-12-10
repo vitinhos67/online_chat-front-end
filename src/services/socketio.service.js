@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import { io } from "socket.io-client";
 
 class SocketioService {
@@ -8,8 +6,7 @@ class SocketioService {
   }
 
   connection() {
-    const host = process.env.VUE_APP_SOCKET_ENDPOINT;
-    this.socket = io(host, {
+    this.socket = io("http://localhost:3000/users", {
       autoConnect: true,
     });
     return this.socket;

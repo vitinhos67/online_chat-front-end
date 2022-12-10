@@ -27,6 +27,7 @@
   </div>
 </template>
 <script>
+
 import login from "../services/login.service";
 
 export default {
@@ -34,13 +35,14 @@ export default {
     return {
       email: "",
       password: "",
-      href_user_chat: (id) => `/chat/${id}`
+      href_user_chat: (id) => `/chat/${id}`,
     };
   },
   components: {},
   methods: {
     async loginUser() {
       try {
+        
         if (!this.password || !this.email) {
           return;
         }
@@ -49,6 +51,9 @@ export default {
           password: this.password,
           email: this.email,
         });
+
+        if(result.statusCode !== 200) throw new Error('Usuario invalido ou um erro aconteceu');
+
 
         const dataToJSON = JSON.stringify(result);
         localStorage.setItem("user", dataToJSON);
