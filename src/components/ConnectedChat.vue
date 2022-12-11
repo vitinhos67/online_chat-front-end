@@ -1,9 +1,8 @@
 <template>
-  <Chat v-bind:onSubmit="onSubmit" :router="this.$route.path"/>
+  <Chat v-bind:onSubmit="onSubmit" :router="this.$route.path" />
 </template>
 
 <script>
-
 import Chat from "./Chat.vue";
 export default {
   components: {
@@ -11,14 +10,13 @@ export default {
   },
   data() {
     return {
-      user: localStorage.getItem('user') ? 
-      JSON.parse(localStorage.getItem('user')).user 
-      : '',
+      user: localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user")).user
+        : "",
       for_user: this.$route.path,
     };
   },
   methods: {},
-
 };
 </script>
 

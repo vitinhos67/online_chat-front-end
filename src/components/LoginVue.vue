@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-
 import login from "../services/login.service";
 
 export default {
@@ -42,7 +41,6 @@ export default {
   methods: {
     async loginUser() {
       try {
-        
         if (!this.password || !this.email) {
           return;
         }
@@ -52,8 +50,8 @@ export default {
           email: this.email,
         });
 
-        if(result.statusCode !== 200) throw new Error('Usuario invalido ou um erro aconteceu');
-
+        if (result.statusCode !== 200)
+          throw new Error("Usuario invalido ou um erro aconteceu");
 
         const dataToJSON = JSON.stringify(result);
         localStorage.setItem("user", dataToJSON);

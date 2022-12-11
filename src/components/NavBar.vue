@@ -20,11 +20,11 @@
 export default {
   data() {
     return {
-      user: localStorage.getItem('user') ? 
-      JSON.parse(localStorage.getItem('user')).user 
-      : ''
+      user: localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user")).user
+        : "",
     };
-  }
+  },
 };
 </script>
 

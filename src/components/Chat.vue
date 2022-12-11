@@ -64,7 +64,7 @@
 </template>
 <script>
 import $ from "jquery";
-import socketioService from "@/services/socketio.service"; 
+import socket from "@/services/socketio.service"; 
 import allUsersOnService from "@/services/allUsersOn.service";
 export default {
   name: "chatHome",
@@ -86,7 +86,7 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       
-      this.sendMessageForUser()
+      this.sendMessageForUser(this.message)
       const element = `<div class='content'>
         <span class='strong-content'>${this.user.username} </span> : ${this.message} 
         <br /> 
@@ -95,20 +95,28 @@ export default {
       $(".box-messages").append(element);
     },
 
-    sendMessageForUser() {
-    console.log(this.$props.router)
+    sendMessageForUser(message) {
+
+      const regex = /[/]chat[/]([1-9]*)/gi
+
+      
+      const id_for_user = regex.exec(this.$route.fullPath)
+      console.log(id_for_user[1])
+      
+      socket.emit('messageBetweenUsers', {
+        message,
+        user: this.user.id,
+        for_user: id_for_user[1]
+      })
 
     }
   },
   async mounted() {
     
 
-
     if(this.user){
-    const socket = socketioService.connection()
     socket.emit('connectionUser', this.user)
     }
-
 
     if(this.$route.fullPath !== '/') { /* empty */ }
 
