@@ -12,7 +12,7 @@
           <div class="each-user-grid-image">
             <img
               class="image-user"
-              v-bind:src="user.external_urls.images[0]"
+              v-bind:src="images"
               alt="Imagem"
             />
           </div>
@@ -65,7 +65,7 @@
 <script>
 import $ from "jquery";
 import socketioService from "@/services/socketio.service"; 
-
+import allUsersOnService from "@/services/allUsersOn.service";
 export default {
   name: "chatHome",
   components: {},
@@ -78,19 +78,7 @@ export default {
       user: localStorage.getItem('user') ? 
       JSON.parse(localStorage.getItem('user')).user 
       : '',
-      users: [
-        {
-          username: "test",
-          id: 75,
-          description: "Outro teste",
-          external_urls: {
-            images: [
-              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Gf1RWi22KtnOd9vNp27fFgHaJ4%26pid%3DApi&f=1&ipt=00081fd41fdbb358184f9b8164d8e00e9172434d4ee0c3a97e2fe4f3e390206d&ipo=images",
-            ],
-          },
-        },
-      ],
-      errors: [],
+      users: [],
     };
   },
   computed: {},
@@ -112,12 +100,24 @@ export default {
 
     }
   },
-  mounted() {
-    console.log(this.user)
+  async mounted() {
+    
+
+
     if(this.user){
     const socket = socketioService.connection()
     socket.emit('connectionUser', this.user)
     }
+
+
+    if(this.$route.fullPath !== '/') { /* empty */ }
+
+    
+    setTimeout(async () => {
+      const users = await allUsersOnService();
+      this.users = users.data;
+    }, 3000)
+
 
   }
 
