@@ -66,6 +66,19 @@
 import $ from "jquery";
 import socket from "@/services/socketio.service"; 
 import allUsersOnService from "@/services/allUsersOn.service";
+
+
+socket.on('receivedMessage', (data) => {
+  console.log(data)
+  const element = `<div class='content'>
+        <span class='strong-content'>${data.from_username} </span> : ${data.message} 
+        <br /> 
+        </div>`;
+
+      $(".box-messages").append(element);
+})
+
+
 export default {
   name: "chatHome",
   components: {},
@@ -81,39 +94,41 @@ export default {
       users: [],
     };
   },
-  computed: {},
+  computed: {
+
+  },
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      
       this.sendMessageForUser(this.message)
-      const element = `<div class='content'>
-        <span class='strong-content'>${this.user.username} </span> : ${this.message} 
-        <br /> 
-        </div>`;
+      this.renderMessage({from_username: this.user.username, message: this.message})
 
-      $(".box-messages").append(element);
     },
 
     sendMessageForUser(message) {
 
       const regex = /[/]chat[/]([1-9]*)/gi
 
-      
       const id_for_user = regex.exec(this.$route.fullPath)
-      console.log(id_for_user[1])
       
       socket.emit('messageBetweenUsers', {
         message,
+        username: this.user.username,
         user: this.user.id,
         for_user: id_for_user[1]
       })
 
+    },
+    renderMessage(data) {
+      const element = `<div class='content'>
+        <span class='strong-content'>${data.from_username} </span> : ${data.message} 
+        <br /> 
+        </div>`;
+
+      $(".box-messages").append(element);
     }
   },
   async mounted() {
-    
-
     if(this.user){
     socket.emit('connectionUser', this.user)
     }
@@ -127,7 +142,8 @@ export default {
     }, 3000)
 
 
-  }
+  },
+
 
 
 };
