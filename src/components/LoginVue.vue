@@ -55,6 +55,7 @@ export default {
 
         const dataToJSON = JSON.stringify(result);
         localStorage.setItem("user", dataToJSON);
+        window.location.href = '/'
       } catch (error) {
         console.log(error.message);
       }

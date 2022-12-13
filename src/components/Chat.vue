@@ -2,9 +2,10 @@
   <div class="container">
     <div class="users">
       <div>
-        <input type="text" placeholder="Buscar por usuario..." />
+        <input class='search-users' type="text" placeholder="Buscar por usuario..." >
+       
         <br />
-        <h3 style="margin-top: 10px">Usuarios Conectados:</h3>
+        <h3 class="users-conected">Usuarios conectados:</h3>
       </div>
 
       <div class="each-users" :key="user" v-for="user of users">
@@ -26,7 +27,7 @@
     <div class="messages">
       <div class="box-messages">
         <div v-if="user">
-          <p>Voce esta conectado</p>
+          <p> Voce esta conectado.</p>
         </div>
         <div class="buttons-link" v-else>
           <h1 class="login-message-h1">
@@ -67,7 +68,6 @@ import $ from "jquery";
 import socket from "@/services/socketio.service"; 
 import allUsersOnService from "@/services/allUsersOn.service";
 
-
 socket.on('receivedMessage', (data) => {
   console.log(data)
   const element = `<div class='content'>
@@ -77,6 +77,8 @@ socket.on('receivedMessage', (data) => {
 
       $(".box-messages").append(element);
 })
+
+
 
 
 export default {
@@ -109,13 +111,14 @@ export default {
 
       const regex = /[/]chat[/]([1-9]*)/gi
 
-      const id_for_user = regex.exec(this.$route.fullPath)
+      const id_for_user = regex.exec(this.$route.fullPath);
       
       socket.emit('messageBetweenUsers', {
         message,
         username: this.user.username,
         user: this.user.id,
-        for_user: id_for_user[1]
+        for_user: id_for_user[1],
+        room: `users:${this.user.id}-${id_for_user[1]}`
       })
 
     },
@@ -129,11 +132,18 @@ export default {
     }
   },
   async mounted() {
+    
     if(this.user){
     socket.emit('connectionUser', this.user)
     }
 
-    if(this.$route.fullPath !== '/') { /* empty */ }
+    if(this.$route.fullPath !== '/') { 
+      
+      const regex = /[/]chat[/]([1-9]*)/gi
+      const connectedWith = regex.exec(this.$route.fullPath);
+      
+      socket.emit('createRoom', `clients:${this.user.id}-${connectedWith[1]}`)
+     }
 
     
     setTimeout(async () => {
@@ -178,6 +188,28 @@ body {
   width: 1200px;
   height: 500px;
   clear: both;
+}
+
+.search-img {
+  width: 20px;
+  margin-top: 8px;
+}
+
+.search-users {
+  margin: 10px;
+  width: 350px;
+  height: 35px;
+  text-align: center;
+  background-image: url('../assets/search.png');
+  background-size: 1.3em;
+  background-repeat: no-repeat;
+  background-position: 320px;
+
+  border-radius: 10px;
+}
+
+.users-conected {
+  margin-left: 12px;
 }
 
 .user-link-profile {
@@ -282,7 +314,6 @@ a:visited {
 }
 
 .session-login {
-  background-color: red 1px solid;
   padding-top: 20px;
   text-align: center;
   width: 500px;

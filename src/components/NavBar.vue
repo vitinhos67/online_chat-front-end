@@ -3,16 +3,19 @@
     <div class="nav-bar-user" v-if="user">
       <img class="user-img" src="../assets/user.png" alt="User" />
       <span class="username-nav-bar">{{ user.username }}</span>
+      <button v-if="user"><span class="sair" @click="logoutUser">Sair</span></button>
+      
+    <br class="clear" />
 
-      <span>Sair</span>
     </div>
+
 
     <div v-else class="nav-bar-login">
       <RouterLink to="/"> Chat </RouterLink>
       <RouterLink to="/login"> Login </RouterLink>
       <RouterLink to="/register"> Registrar </RouterLink>
     </div>
-    <br class="clear" />
+    
   </nav>
 </template>
 
@@ -25,6 +28,12 @@ export default {
         : "",
     };
   },
+  methods: {
+    logoutUser() {
+      localStorage.removeItem('user')
+      window.location.reload()
+    }
+  }
 };
 </script>
 
@@ -50,14 +59,15 @@ a {
 
 #nav-bar {
   width: 100%;
+
   height: 80px;
   border: 1px solid #ddd;
   background-color: var(--background-color-default);
 }
 .user-img {
-  width: 60px;
+  width: 50px;
   margin-left: 20px;
-  margin-top: 4px;
+  margin-top: 12px;
   filter: opacity(50%);
 }
 
@@ -67,6 +77,14 @@ a {
   top: 25px;
   margin-left: 20px;
   font-size: 30px;
+}
+
+.sair {
+  position:absolute;
+  font-size: 22px;
+  right: 20px;
+  top: 30px;
+  color: rgb(249, 55, 55);
 }
 
 .username-nav-bar {
@@ -80,8 +98,6 @@ a {
 .nav-bar-user {
   width: 30%;
   height: 70px;
-  align-items: center;
-  float: left;
   margin: 5px;
 }
 
