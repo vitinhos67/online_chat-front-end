@@ -4,22 +4,20 @@
       <div class="login-page">
         <div class="form">
           <form class="login-form" @submit="loginUser">
-            <h1>Login</h1>
+            
+
+            
+        
+            <div class="box-input">
+              <h1>Adicione dados adicionais a sua conta.</h1>
+              <br />
+              <span class="subtitle">Description:</span>
+              <br />
+              <input type="text" name="description" v-model="description" />
             <br />
-            <br />
-            <span class="subtitle">EMAIL:</span>
-            <br />
-            <input type="email" name="email" v-model="email" />
-            <br />
-            <span class="subtitle">PASSWORD:</span>
-            <br />
-            <input type="password" name="password" v-model="password" />
-            <br />
-            <br />
-            <input v-on:click="loginUser" class="submit-btn"  value="Login"/>
-            <span class="change-form-btn">
-              <a href="/register">Registre aqui</a>
-            </span>
+            <input value="Alterar" class="submit-btn" @click="onSubmit"/>
+          </div>
+            <span class="message-status"></span>
           </form>
         </div>
       </div>
@@ -27,39 +25,48 @@
   </div>
 </template>
 <script>
-import login from "../services/login.service";
-
+import axios from 'axios';
+import $ from "jquery";
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      user: localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user")).user
+        : "",
+      description: "",
       href_user_chat: (id) => `/chat/${id}`,
     };
   },
   components: {},
   methods: {
-    async loginUser() {
-      try {
-        if (!this.password || !this.email) {
-          return;
-        }
-
-        const result = await login({
-          password: this.password,
-          email: this.email,
-        });
-
-        if (result.statusCode !== 200)
-          throw new Error("Usuario invalido ou um erro aconteceu");
-
-        const dataToJSON = JSON.stringify(result);
-        localStorage.setItem("user", dataToJSON);
-        window.location.href = "/";
-      } catch (error) {
-        console.log(error);
+    async onSubmit(e) {
+      e.preventDefault()
+      
+      if(!this.description) {
+        return;
       }
-    },
+      console.log
+      const sendDescription = await axios({
+        method: 'post',
+        url: "http://localhost:3000/add/description",
+        data:{
+          id: this.user.id,
+         description: this.description
+        }
+      })
+
+      if(sendDescription.status === 200) {
+        $('.message-status').append(`Descrição alterada com sucesso`).css('display', 'block')
+      }
+
+      setTimeout(() => {
+        $('.message-status').css('display', 'none')
+      }, 1000)
+     
+    }
+    
+
+
   },
 };
 </script>
@@ -83,9 +90,22 @@ a {
   color: black;
 }
 
+.message-status {
+  margin-left: 5px;
+  padding: 10px;
+  display: none;
+  color: green;
+  border-radius: 7px;
+  border: 1px solid green;
+}
+
 h1 {
   font-size: 35px;
   font-weight: 800;
+}
+.box-input {
+  text-align: center;
+  align-items: center;
 }
 
 .flex-container {
@@ -117,21 +137,22 @@ h1 {
 input {
   border: none;
   border-bottom: solid rgb(143, 143, 143) 1px;
+
   margin-bottom: 30px;
+
   background: none;
   color: black;
-  
+
   height: 35px;
   width: 300px;
 }
 
 .submit-btn {
   cursor: pointer;
-  padding-left: 22px;
+  padding-left: 19px;
   border: none;
   border-radius: 8px;
   background: #ddd;
-
   color: black;
   width: 80px;
 

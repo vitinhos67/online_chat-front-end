@@ -20,7 +20,7 @@
             <input type="email" name="email" v-model="email" />
             <br />
             <br />
-            <input type="submit" value="SUBMIT" class="submit-btn" />
+            <input type="submit" value="Registrar-se" class="submit-btn" />
             <span class="change-form-btn"> </span>
 
             <a href="/login">Loga-se aqui</a>

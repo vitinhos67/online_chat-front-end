@@ -138,19 +138,29 @@ export default {
       });
     },
     async loadMessages() {
+      
       const messages = await restoreMessages({
         from_id: this.user.id,
         for_id: this.connectedWith.id,
       });
+      
 
-      for (let index in messages) {
-        if (!messages[index]) {
-          continue;
-        }
+        for(const message in messages) {
+        
+          if(!messages[message]) {
+            continue;
+          }
+
+        
+        for(let i = 0; i < messages[message].length; i++)
+        
         this.renderMessage({
-          from_username: messages[index].from_username,
-          message: messages[index].message,
-        });
+          from_username: messages[message][i].from_username,
+          message: messages[message][i].message
+        })
+        
+        
+        
       }
     },
     renderMessage(data) {
