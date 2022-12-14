@@ -3,19 +3,18 @@
     <div class="nav-bar-user" v-if="user">
       <img class="user-img" src="../assets/user.png" alt="User" />
       <span class="username-nav-bar">{{ user.username }}</span>
-      <button v-if="user"><span class="sair" @click="logoutUser">Sair</span></button>
-      
-    <br class="clear" />
+      <button v-if="user">
+        <span class="sair" @click="logoutUser">Sair</span>
+      </button>
 
+      <br class="clear" />
     </div>
-
 
     <div v-else class="nav-bar-login">
       <RouterLink to="/"> Chat </RouterLink>
       <RouterLink to="/login"> Login </RouterLink>
       <RouterLink to="/register"> Registrar </RouterLink>
     </div>
-    
   </nav>
 </template>
 
@@ -30,10 +29,10 @@ export default {
   },
   methods: {
     logoutUser() {
-      localStorage.removeItem('user')
-      window.location.reload()
-    }
-  }
+      localStorage.removeItem("user");
+      window.location.reload();
+    },
+  },
 };
 </script>
 
@@ -80,7 +79,7 @@ a {
 }
 
 .sair {
-  position:absolute;
+  position: absolute;
   font-size: 22px;
   right: 20px;
   top: 30px;

@@ -2,20 +2,25 @@
   <div class="container">
     <div class="users">
       <div>
-        <input class='search-users' type="text" placeholder="Buscar por usuario..." >
-       
+        <input
+          class="search-users"
+          type="text"
+          placeholder="Buscar por usuario..."
+        />
+
         <br />
         <h3 class="users-conected">Usuarios conectados:</h3>
       </div>
 
-      <div class="each-users" :key="user" v-for="user of users">
+      <div
+        class="each-users"
+        :key="user"
+        v-for="user of users"
+        @click="updateDates"
+      >
         <RouterLink v-bind:to="href_user_chat(user.id)">
           <div class="each-user-grid-image">
-            <img
-              class="image-user"
-              v-bind:src="images"
-              alt="Imagem"
-            />
+            <!-- <img class="image-user" v-bind:src="images" alt="Imagem" /> -->
           </div>
           <div class="each-user-grid-text">
             <p class="user-username">{{ user.username }}</p>
@@ -25,9 +30,9 @@
       </div>
     </div>
     <div class="messages">
-      <div class="box-messages">
+      <div class="box-messages" id="remove-messages">
         <div v-if="user">
-          <p> Voce esta conectado.</p>
+          <p>Voce esta conectado.</p>
         </div>
         <div class="buttons-link" v-else>
           <h1 class="login-message-h1">
@@ -65,62 +70,89 @@
 </template>
 <script>
 import $ from "jquery";
-import socket from "@/services/socketio.service"; 
+import socket from "@/services/socketio.service";
 import allUsersOnService from "@/services/allUsersOn.service";
+import restoreMessages from "../services/load-messages-users.service";
+import find_userService from "@/services/find_user.service";
 
-socket.on('receivedMessage', (data) => {
-  console.log(data)
-  const element = `<div class='content'>
+
+socket.on("receivedMessage", (data) => {
+  const element = `<div class='content' id='chat-message-with-${data.from_id}'>
         <span class='strong-content'>${data.from_username} </span> : ${data.message} 
         <br /> 
         </div>`;
 
-      $(".box-messages").append(element);
-})
-
-
-
+  $(".box-messages").append(element);
+});
 
 export default {
   name: "chatHome",
   components: {},
-  props: ['router'],
+  props: ["router"],
 
   data() {
     return {
       message: "",
       href_user_chat: (id) => `/chat/${id}`,
-      user: localStorage.getItem('user') ? 
-      JSON.parse(localStorage.getItem('user')).user 
-      : '',
+      user: localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user")).user
+        : "",
       users: [],
+      connectedWith: 'null',
     };
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      this.sendMessageForUser(this.message)
-      this.renderMessage({from_username: this.user.username, message: this.message})
-
+      this.sendMessageForUser(this.message);
+      this.renderMessage({
+        from_username: this.user.username,
+        message: this.message,
+        from_id: this.connectedWith,
+      });
+    },
+    async updateConnectWith() {
+      
+      const regex = /[/]chat[/]([1-9]*)/gi;
+      
+      const connected_with_id_user = regex.exec(this.$route.fullPath)[1];
+      const connected_with_user = await find_userService(connected_with_id_user)
+      if(!connected_with_id_user) {
+        return;
+      }
+      this.connectedWith = connected_with_user
     },
 
     sendMessageForUser(message) {
-
-      const regex = /[/]chat[/]([1-9]*)/gi
-
+      const regex = /[/]chat[/]([1-9]*)/gi;
       const id_for_user = regex.exec(this.$route.fullPath);
-      
-      socket.emit('messageBetweenUsers', {
+
+      socket.emit("messageBetweenUsers", {
+        for_username: this.connectedWith.username,
+        from_username: this.user.username,
         message,
         username: this.user.username,
         user: this.user.id,
         for_user: id_for_user[1],
-        room: `users:${this.user.id}-${id_for_user[1]}`
-      })
+      });
+    },
+    async loadMessages() {
+      const messages = await restoreMessages({
+        from_id: this.user.id,
+        for_id: this.connectedWith.id,
+      });
 
+      for(let index in messages) {
+        
+        if(!messages[index]) {
+          continue;
+        }
+      this.renderMessage({
+          from_username: messages[index].from_username,
+          message: messages[index].message
+        }) 
+      }
     },
     renderMessage(data) {
       const element = `<div class='content'>
@@ -129,33 +161,29 @@ export default {
         </div>`;
 
       $(".box-messages").append(element);
-    }
+    },
+    async updateDates() {
+      $('.content').remove();
+      
+      await this.updateConnectWith()
+      this.loadMessages();
+    },
   },
   async mounted() {
     
-    if(this.user){
-    socket.emit('connectionUser', this.user)
+    if (this.user) {
+      socket.emit("connectionUser", this.user);
+    if (this.$route.fullPath !== "/") {
+      await this.updateConnectWith()
+      
+    }
     }
 
-    if(this.$route.fullPath !== '/') { 
-      
-      const regex = /[/]chat[/]([1-9]*)/gi
-      const connectedWith = regex.exec(this.$route.fullPath);
-      
-      socket.emit('createRoom', `clients:${this.user.id}-${connectedWith[1]}`)
-     }
-
-    
     setTimeout(async () => {
       const users = await allUsersOnService();
       this.users = users.data;
-    }, 3000)
-
-
+    }, 1000);
   },
-
-
-
 };
 </script>
 
@@ -200,7 +228,7 @@ body {
   width: 350px;
   height: 35px;
   text-align: center;
-  background-image: url('../assets/search.png');
+  background-image: url("../assets/search.png");
   background-size: 1.3em;
   background-repeat: no-repeat;
   background-position: 320px;
