@@ -1,34 +1,38 @@
 <template>
   <div class="container">
     <div class="users">
-      <div>
-        <input
-          class="search-users"
-          type="text"
-          placeholder="Buscar por usuario..."
-        />
+      <div class="box-users">
+        <div>
+          <input
+            class="search-users"
+            type="text"
+            placeholder="Buscar por usuario..."
+          />
 
-        <br />
-        <h3 class="users-conected">Usuarios conectados:</h3>
-      </div>
+          <br />
+          <h3 class="users-conected">Usuarios conectados:</h3>
+        </div>
+        <br/>
+        <div class="user" v-bind:key="user" v-for="user in users">
+        <img src="../assets/roberto.jpeg" class='image-profile' alt="image-profile"> 
+        <span class="username-profile">{{user.username.charAt(0).toUpperCase() + user.username.slice(1)}}</span>
 
-      <div
-        class="each-users"
-        :key="user"
-        v-for="user of users"
-        @click="updateDates"
-      >
-        <RouterLink v-bind:to="href_user_chat(user.id)">
-          <div class="each-user-grid-image">
-            <!-- <img class="image-user" v-bind:src="images" alt="Imagem" /> -->
-          </div>
-          <div class="each-user-grid-text">
-            <p class="user-username">{{ user.username }}</p>
-            <p class="user-description">{{ user.description }}</p>
-          </div>
-        </RouterLink>
+        <div class="description-box">
+          
+          <span class ='user-description'>
+           <h4> Sobre {{ user.username }}: </h4> <br/>
+            
+            <span v-if="!user.description">Não sabemos muito sobre {{username}}, mas pode apostar que é alguem legal!</span>
+            <span v-else>{{user.description}}</span>
+          </span>
+        </div>
+
+
+        </div>
+
       </div>
     </div>
+
     <div class="messages">
       <div class="box-messages" id="remove-messages">
         <div v-if="user">
@@ -138,29 +142,21 @@ export default {
       });
     },
     async loadMessages() {
-      
       const messages = await restoreMessages({
         from_id: this.user.id,
         for_id: this.connectedWith.id,
       });
-      
 
-        for(const message in messages) {
-        
-          if(!messages[message]) {
-            continue;
-          }
+      for (const message in messages) {
+        if (!messages[message]) {
+          continue;
+        }
 
-        
-        for(let i = 0; i < messages[message].length; i++)
-        
-        this.renderMessage({
-          from_username: messages[message][i].from_username,
-          message: messages[message][i].message
-        })
-        
-        
-        
+        for (let i = 0; i < messages[message].length; i++)
+          this.renderMessage({
+            from_username: messages[message][i].from_username,
+            message: messages[message][i].message,
+          });
       }
     },
     renderMessage(data) {
@@ -225,69 +221,16 @@ body {
   clear: both;
 }
 
-.search-img {
-  width: 20px;
-  margin-top: 8px;
-}
-
 .search-users {
   margin: 10px;
-  width: 350px;
-  height: 35px;
+  width: 380px;
+  height: 30px;
   text-align: center;
   background-image: url("../assets/search.png");
-  background-size: 1.3em;
+  background-size: 1.1em;
   background-repeat: no-repeat;
   background-position: 320px;
-
-  border-radius: 10px;
-}
-
-.users-conected {
-  margin-left: 12px;
-}
-
-.user-link-profile {
-  position: absolute;
-}
-
-.content {
-  font-size: 20px;
-}
-.strong-content {
-  font-weight: bold;
-}
-.each-users {
-  border-radius: 1px;
-  width: 100%;
-  height: 100px;
-}
-
-.each-user-grid-image {
-  height: 100%;
-  float: left;
-  width: 80px;
-}
-
-.each-user-grid-text {
-  height: 100%;
-  width: 108;
-}
-
-.image-user {
-  width: 100%;
-  height: 100%;
-}
-
-.user-username {
-  margin-top: 15px;
-
-  color: black;
-}
-
-.user-description {
-  color: black;
-  font-size: 20px;
+  border-radius: 8px;
 }
 
 .users {
@@ -296,7 +239,63 @@ body {
   margin-left: 30px;
   margin-right: 30px;
   height: 100%;
+  margin: 0px;
+
 }
+
+.box-users {
+  margin-left: 10px;
+  width: 95%;
+  height: 100%;
+
+}
+
+.user {
+  width: 400px;
+  height: 160px;
+  background-color: #F6F6F6;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  border: var(--default-border);
+}
+
+.image-profile {
+  width: 50px;
+  float: left;
+  margin-top: 4px;
+  margin-left: 10px;
+
+}
+
+.username-profile {
+  float: inline-start;
+  font-size: 20px;
+  margin-left: 5px;
+  margin-top: 15px;
+}
+
+.user-description {
+  float: inline-start;
+  margin-top: 5px;
+  background-color: #d7d5d535;
+  padding: 10px;
+  border-radius: 5px;
+  color: black;
+
+}
+
+.users-conected {
+  margin-left: 12px;
+}
+
+.content {
+  font-size: 20px;
+}
+.strong-content {
+  font-weight: bold;
+}
+
 
 .messages {
   width: 800px;

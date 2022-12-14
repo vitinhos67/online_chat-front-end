@@ -4,19 +4,15 @@
       <div class="login-page">
         <div class="form">
           <form class="login-form" @submit="loginUser">
-            
-
-            
-        
             <div class="box-input">
               <h1>Adicione dados adicionais a sua conta.</h1>
               <br />
               <span class="subtitle">Description:</span>
               <br />
               <input type="text" name="description" v-model="description" />
-            <br />
-            <input value="Alterar" class="submit-btn" @click="onSubmit"/>
-          </div>
+              <br />
+              <input value="Alterar" class="submit-btn" @click="onSubmit" />
+            </div>
             <span class="message-status"></span>
           </form>
         </div>
@@ -25,7 +21,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
 import $ from "jquery";
 export default {
   data() {
@@ -40,33 +36,30 @@ export default {
   components: {},
   methods: {
     async onSubmit(e) {
-      e.preventDefault()
-      
-      if(!this.description) {
+      e.preventDefault();
+
+      if (!this.description) {
         return;
       }
-      console.log
       const sendDescription = await axios({
-        method: 'post',
+        method: "post",
         url: "http://localhost:3000/add/description",
-        data:{
+        data: {
           id: this.user.id,
-         description: this.description
-        }
-      })
+          description: this.description,
+        },
+      });
 
-      if(sendDescription.status === 200) {
-        $('.message-status').append(`Descrição alterada com sucesso`).css('display', 'block')
+      if (sendDescription.status === 200) {
+        $(".message-status")
+          .append(`Descrição alterada com sucesso`)
+          .css("display", "block");
       }
 
       setTimeout(() => {
-        $('.message-status').css('display', 'none')
-      }, 1000)
-     
-    }
-    
-
-
+        $(".message-status").css("display", "none");
+      }, 1000);
+    },
   },
 };
 </script>

@@ -20,7 +20,7 @@ const routes = [
     path: "/register",
     name: "signup",
     component: () => import("../components/RegisterVue.vue"),
-  },  
+  },
   {
     path: "/chat",
     redirect: "/",
@@ -29,7 +29,7 @@ const routes = [
     path: "/profile/change",
     name: "Change Profile",
     component: () => import("../components/ProfileChange.vue"),
-  },  
+  },
 ];
 
 const router = createRouter({

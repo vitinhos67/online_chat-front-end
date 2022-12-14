@@ -9,7 +9,7 @@ export default async ({
 }) => {
   const response = axios({
     method: "post",
-    url: `http://localhost:3000`,
+    url: `http://localhost:3000/add/message`,
     data: {
       from_username,
       for_username,

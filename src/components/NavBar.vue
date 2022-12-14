@@ -2,10 +2,11 @@
   <nav id="nav-bar">
     <div class="nav-bar-user" v-if="user">
       <img class="user-img" src="../assets/user.png" alt="User" />
-      <span class="username-nav-bar">{{ user.username }}</span>
-        <router-link to="/profile/change"><span class="alterar-perfil">Perfil</span></router-link>
-        <span class="sair" @click="logoutUser">Sair</span>
-     
+      <span class="username-nav-bar">{{ user.username.charAt(0).toUpperCase() + user.username.slice(1) }}</span>
+      <router-link to="/profile/change"
+        ><span class="alterar-perfil">Perfil</span></router-link
+      >
+      <span class="sair" @click="logoutUser">Sair</span>
 
       <br class="clear" />
     </div>
@@ -89,7 +90,7 @@ a {
 .alterar-perfil {
   position: absolute;
   font-size: 22px;
-  right:  70px;
+  right: 70px;
   top: 30px;
 }
 

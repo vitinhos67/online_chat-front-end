@@ -16,7 +16,7 @@
             <input type="password" name="password" v-model="password" />
             <br />
             <br />
-            <input v-on:click="loginUser" class="submit-btn"  value="Login"/>
+            <input v-on:click="loginUser" class="submit-btn" value="Login" />
             <span class="change-form-btn">
               <a href="/register">Registre aqui</a>
             </span>
@@ -120,7 +120,7 @@ input {
   margin-bottom: 30px;
   background: none;
   color: black;
-  
+
   height: 35px;
   width: 300px;
 }
