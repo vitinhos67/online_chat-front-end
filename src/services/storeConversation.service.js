@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export default async ({ from_id, for_id, message,from_username, for_username }) => {
+export default async ({
+  from_id,
+  for_id,
+  message,
+  from_username,
+  for_username,
+}) => {
   const response = axios({
     method: "post",
     url: `http://localhost:3000`,

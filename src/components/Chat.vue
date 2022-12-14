@@ -75,7 +75,6 @@ import allUsersOnService from "@/services/allUsersOn.service";
 import restoreMessages from "../services/load-messages-users.service";
 import find_userService from "@/services/find_user.service";
 
-
 socket.on("receivedMessage", (data) => {
   const element = `<div class='content' id='chat-message-with-${data.from_id}'>
         <span class='strong-content'>${data.from_username} </span> : ${data.message} 
@@ -98,7 +97,7 @@ export default {
         ? JSON.parse(localStorage.getItem("user")).user
         : "",
       users: [],
-      connectedWith: 'null',
+      connectedWith: "null",
     };
   },
   computed: {},
@@ -113,15 +112,16 @@ export default {
       });
     },
     async updateConnectWith() {
-      
       const regex = /[/]chat[/]([1-9]*)/gi;
-      
+
       const connected_with_id_user = regex.exec(this.$route.fullPath)[1];
-      const connected_with_user = await find_userService(connected_with_id_user)
-      if(!connected_with_id_user) {
+      const connected_with_user = await find_userService(
+        connected_with_id_user
+      );
+      if (!connected_with_id_user) {
         return;
       }
-      this.connectedWith = connected_with_user
+      this.connectedWith = connected_with_user;
     },
 
     sendMessageForUser(message) {
@@ -143,15 +143,14 @@ export default {
         for_id: this.connectedWith.id,
       });
 
-      for(let index in messages) {
-        
-        if(!messages[index]) {
+      for (let index in messages) {
+        if (!messages[index]) {
           continue;
         }
-      this.renderMessage({
+        this.renderMessage({
           from_username: messages[index].from_username,
-          message: messages[index].message
-        }) 
+          message: messages[index].message,
+        });
       }
     },
     renderMessage(data) {
@@ -163,20 +162,18 @@ export default {
       $(".box-messages").append(element);
     },
     async updateDates() {
-      $('.content').remove();
-      
-      await this.updateConnectWith()
+      $(".content").remove();
+
+      await this.updateConnectWith();
       this.loadMessages();
     },
   },
   async mounted() {
-    
     if (this.user) {
       socket.emit("connectionUser", this.user);
-    if (this.$route.fullPath !== "/") {
-      await this.updateConnectWith()
-      
-    }
+      if (this.$route.fullPath !== "/") {
+        await this.updateConnectWith();
+      }
     }
 
     setTimeout(async () => {
