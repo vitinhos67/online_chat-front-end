@@ -12,24 +12,42 @@
           <br />
           <h3 class="users-conected">Usuarios conectados:</h3>
         </div>
-        <br/>
+        <br />
+
         <div class="user" v-bind:key="user" v-for="user in users">
-        <img src="../assets/roberto.jpeg" class='image-profile' alt="image-profile"> 
-        <span class="username-profile">{{user.username.charAt(0).toUpperCase() + user.username.slice(1)}}</span>
+          <div class="box-profile">
+            <router-link
+              class="open-chat"
+              :to="href_user_chat(user.id)"
+              @click="updateDates"
+            >
+              <img
+                class="image-open-chat"
+                src="../assets/seta_cinza_direita.png"
+                :alt="['Abrir bate-papo com', user.username]"
+              />
+            </router-link>
 
-        <div class="description-box">
-          
-          <span class ='user-description'>
-           <h4> Sobre {{ user.username }}: </h4> <br/>
-            
-            <span v-if="!user.description">Não sabemos muito sobre {{username}}, mas pode apostar que é alguem legal!</span>
-            <span v-else>{{user.description}}</span>
-          </span>
+            <img
+              src="../assets/roberto.jpeg"
+              class="image-profile"
+              alt="image-profile"
+            />
+
+            <span class="username-profile">{{
+              user.username.charAt(0).toUpperCase() + user.username.slice(1)
+            }}</span>
+          </div>
+          <div class="description-box">
+            <span class="user-description">
+              <span v-if="!user.description"
+                >Não sabemos muito sobre {{ username }}, mas pode apostar que é
+                alguem legal!</span
+              >
+              <span v-else>{{ user.description }}</span>
+            </span>
+          </div>
         </div>
-
-
-        </div>
-
       </div>
     </div>
 
@@ -147,16 +165,15 @@ export default {
         for_id: this.connectedWith.id,
       });
 
-      for (const message in messages) {
-        if (!messages[message]) {
-          continue;
-        }
+      if (messages.statusCode === 204) {
+        return;
+      }
 
-        for (let i = 0; i < messages[message].length; i++)
-          this.renderMessage({
-            from_username: messages[message][i].from_username,
-            message: messages[message][i].message,
-          });
+      for (const message in messages) {
+        this.renderMessage({
+          message: messages[message].message,
+          from_username: messages[message].username,
+        });
       }
     },
     renderMessage(data) {
@@ -181,7 +198,6 @@ export default {
         await this.updateConnectWith();
       }
     }
-
     setTimeout(async () => {
       const users = await allUsersOnService();
       this.users = users.data;
@@ -233,27 +249,39 @@ body {
   border-radius: 8px;
 }
 
+.box-profile {
+  width: 90%;
+  height: 50%;
+}
+
+.description-box {
+  width: 300px;
+  height: 50%;
+
+  background-color: #d7d5d535;
+  padding: 10px;
+  border-radius: 5px;
+  color: black;
+}
+
 .users {
   border: var(--default-border);
   width: 1000px;
-  margin-left: 30px;
-  margin-right: 30px;
   height: 100%;
-  margin: 0px;
-
+  margin-left: 50px;
 }
 
 .box-users {
   margin-left: 10px;
   width: 95%;
   height: 100%;
-
+  overflow-y: auto;
 }
 
 .user {
   width: 400px;
   height: 160px;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 8px;
@@ -265,7 +293,6 @@ body {
   float: left;
   margin-top: 4px;
   margin-left: 10px;
-
 }
 
 .username-profile {
@@ -274,15 +301,14 @@ body {
   margin-left: 5px;
   margin-top: 15px;
 }
+.open-chat {
+  float: right;
+  margin-top: 15px;
+}
 
-.user-description {
-  float: inline-start;
-  margin-top: 5px;
-  background-color: #d7d5d535;
-  padding: 10px;
-  border-radius: 5px;
-  color: black;
-
+.image-open-chat {
+  width: 10px;
+  margin-right: 10px;
 }
 
 .users-conected {
@@ -296,10 +322,10 @@ body {
   font-weight: bold;
 }
 
-
 .messages {
   width: 800px;
   justify-content: center;
+  margin-left: 30px;
   height: 500px;
   border: var(--default-border);
 }
@@ -309,6 +335,7 @@ body {
   width: 750px;
   height: 400px;
   margin: 10px;
+  overflow-y: auto;
 
   border-radius: 10px;
 }

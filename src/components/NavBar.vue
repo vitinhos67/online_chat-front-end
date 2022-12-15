@@ -2,7 +2,9 @@
   <nav id="nav-bar">
     <div class="nav-bar-user" v-if="user">
       <img class="user-img" src="../assets/user.png" alt="User" />
-      <span class="username-nav-bar">{{ user.username.charAt(0).toUpperCase() + user.username.slice(1) }}</span>
+      <span class="username-nav-bar">{{
+        user.username.charAt(0).toUpperCase() + user.username.slice(1)
+      }}</span>
       <router-link to="/profile/change"
         ><span class="alterar-perfil">Perfil</span></router-link
       >
