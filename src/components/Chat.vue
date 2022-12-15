@@ -54,7 +54,7 @@
     <div class="messages">
       <div class="box-messages" id="remove-messages">
         <div v-if="user">
-          <p>Voce esta conectado.</p>
+          <p style="margin: 5px; color: green;">Você esta conectado.</p>
         </div>
         <div class="buttons-link" v-else>
           <h1 class="login-message-h1">
@@ -196,6 +196,7 @@ export default {
       socket.emit("connectionUser", this.user);
       if (this.$route.fullPath !== "/") {
         await this.updateConnectWith();
+        await this.loadMessages()
       }
     }
     setTimeout(async () => {
@@ -317,6 +318,8 @@ body {
 
 .content {
   font-size: 20px;
+  margin-top: 5px;
+  margin-left: 5px;
 }
 .strong-content {
   font-weight: bold;
