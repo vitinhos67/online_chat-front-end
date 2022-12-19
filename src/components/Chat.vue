@@ -201,6 +201,7 @@ export default {
     this.user = this.User;
 
     if (this.user) {
+      console.log(this.user)
       socket.emit("connectionUser", this.user);
 
       if (this.endpoint !== "/chat") {

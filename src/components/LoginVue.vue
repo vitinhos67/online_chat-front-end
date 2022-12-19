@@ -20,7 +20,11 @@
             <span class="change-form-btn">
               <a href="/register">Registre aqui</a>
             </span>
+            
           </form>
+
+
+          <div class="message-status"></div>
         </div>
       </div>
     </div>
@@ -28,7 +32,7 @@
 </template>
 <script>
 import login from "../services/login.service";
-
+import $ from "jquery"
 import cookies from "vue-cookies";
 export default {
   data() {
@@ -49,12 +53,21 @@ export default {
         const authorization = await login({
           password: this.password,
           email: this.email,
-        });
+        })
 
-        if (authorization.statusCode !== 200)
-          throw new Error("Usuario invalido ou um erro aconteceu");
-        cookies.set("auth_user", authorization.user);
+        if (authorization.statusCode === 401) {
+          
+          $(".message-status")
+          .append(`O usuario não foi encontrado`)
+          .css("display", "block");
 
+
+        setTimeout(() => {
+        $(".message-status").css("display", "none");
+      }, 2000);
+        return 
+        }
+        cookies.set("auth_user", authorization.access_token);
         window.location.href = "/";
       } catch (error) {
         console.log(error);
@@ -86,6 +99,15 @@ a {
 h1 {
   font-size: 35px;
   font-weight: 800;
+}
+
+.message-status {
+  margin-left: 5px;
+  padding: 10px;
+  display: none;
+  color: red;
+  border-radius: 7px;
+  border: 1px solid red
 }
 
 .flex-container {

@@ -28,7 +28,7 @@ export default {
       this.loading = true;
       this.error = [];
       try {
-        const { access_token } = cookies.get("auth_user");
+        const access_token = cookies.get("auth_user");
         if (access_token) {
           const user = await User.dataUser(access_token);
           if (!user) {
