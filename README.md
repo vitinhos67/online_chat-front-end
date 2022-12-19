@@ -7,7 +7,7 @@
 
 <h3>O projeto utiliza do framework Vue.js, o objetivo e consumir a aplicação do back end.</h3>
 
-O lado do servidor foi construido através do Vue.js, você pode ver <a href="https://github.com/vitinhos67/online_chat-back-end">aqui</a>
+O lado do servidor foi construido através do Node.js, você pode ver <a href="https://github.com/vitinhos67/online_chat-back-end">aqui</a>
 
 ![Alt text](./src/assets/screenshots/home-page.png)
 
