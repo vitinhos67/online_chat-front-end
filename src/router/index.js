@@ -3,11 +3,11 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/chat/:id",
-    name: "chatConnected",
-    component: () => import("../components/ConnectedChat.vue"),
+    name: "chatWithUser",
+    component: () => import("../components/Chat.vue"),
   },
   {
-    path: "/",
+    path: "/chat",
     name: "chat",
     component: () => import("../components/Chat.vue"),
   },
@@ -22,13 +22,18 @@ const routes = [
     component: () => import("../components/RegisterVue.vue"),
   },
   {
-    path: "/chat",
-    redirect: "/",
+    path: "/",
+    redirect: "/chat",
   },
   {
     path: "/profile/change",
     name: "Change Profile",
     component: () => import("../components/ProfileChange.vue"),
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "Page Not Found",
+    component: () => import("../components/Error-404-Page.vue"),
   },
 ];
 

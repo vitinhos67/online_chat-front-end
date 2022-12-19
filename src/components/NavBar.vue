@@ -8,7 +8,7 @@
       <router-link to="/profile/change"
         ><span class="alterar-perfil">Perfil</span></router-link
       >
-      <span class="sair" @click="logoutUser">Sair</span>
+      <a class="sair" @click="logoutUser">Sair </a>
 
       <br class="clear" />
     </div>
@@ -27,22 +27,22 @@ import cookies from "vue-cookies";
 export default {
   data() {
     return {
-      user: ''
+      user: "",
     };
   },
-  props: ['User'],
+  props: ["User"],
   methods: {
     logoutUser() {
       cookies.remove("auth_user");
-      window.location.reload();
+
+      window.location.href = "/chat";
     },
   },
-  created(){
-   
-    if(this.User) {
-      this.user = this.User
+  created() {
+    if (this.User) {
+      this.user = this.User;
     }
-  }
+  },
 };
 </script>
 
@@ -94,6 +94,7 @@ a {
   right: 20px;
   top: 30px;
   color: rgb(249, 55, 55);
+  cursor: pointer;
 }
 
 .alterar-perfil {
@@ -126,4 +127,3 @@ a {
   text-decoration: none;
 }
 </style>
-Property "User" was accessed during render but is not defined on instance.

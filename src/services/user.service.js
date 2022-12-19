@@ -11,15 +11,14 @@ class UserMethods {
   }
 
   async dataUser(token) {
-    const {data} = await axios({
+    const { data } = await axios({
       method: "get",
       url: `http://localhost:3000/data/user`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
 
-    
     return data;
   }
 }

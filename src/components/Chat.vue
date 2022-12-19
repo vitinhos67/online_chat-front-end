@@ -97,7 +97,6 @@ import restoreMessages from "../services/load-messages-users.service";
 import User from "@/services/user.service";
 import cookies from "vue-cookies";
 
-
 socket.on("receivedMessage", (data) => {
   const element = `<div class='content' id='chat-message-with-${data.from_id}'>
         <span class='strong-content'>${data.from_username} </span> : ${data.message} 
@@ -110,23 +109,25 @@ socket.on("receivedMessage", (data) => {
 export default {
   name: "chatHome",
   components: {},
-  props: ['router', 'User'],
+  props: ["router", "User"],
 
   data() {
     return {
       message: "",
       href_user_chat: (id) => `/chat/${id}`,
-      user: '',
+      user: "",
       users: [],
-      connectedWith: "null",
+      connectedWith: "",
       auth_user: cookies.get("auth_user"),
+      endpoint: this.$route.path,
     };
   },
   computed: {},
+  watch: {},
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      
+
       this.sendMessageForUser(this.message);
       this.renderMessage({
         from_username: this.user.username,
@@ -134,24 +135,22 @@ export default {
         from_id: this.connectedWith,
       });
     },
-    
+
     async updateConnectWith() {
       const regex = /[/]chat[/]([1-9]*)/gi;
-
       const connected_with_id_user = regex.exec(this.$route.fullPath)[1];
-
       const connected_with_user = await User.find(connected_with_id_user);
-      
+
       if (!connected_with_id_user) {
-        window.location.href('/');
+        window.location.href = "/";
       }
-      
+
       this.connectedWith = connected_with_user;
     },
 
     sendMessageForUser(message) {
       const regex = /[/]chat[/]([1-9]*)/gi;
-      const id_for_user = regex.exec(this.$route.fullPath);
+      const id_for_user = regex.exec(this.endpoint);
 
       socket.emit("messageBetweenUsers", {
         for_username: this.connectedWith.username,
@@ -187,7 +186,11 @@ export default {
 
       $(".box-messages").append(element);
     },
-    async updateDates() {
+
+    async updateDates(e) {
+      if (e) {
+        e.preventDefault();
+      }
       $(".content").remove();
 
       await this.updateConnectWith();
@@ -195,20 +198,20 @@ export default {
     },
   },
   async created() {
-    
-    if(this.User) {
-      this.user = this.User
-    
+    this.user = this.User;
 
-      if (this.user) {
+    if (this.user) {
       socket.emit("connectionUser", this.user);
-      
-      if (this.$route.fullPath !== "/") {
-        await this.updateConnectWith();
-        await this.loadMessages();
+
+      if (this.endpoint !== "/chat") {
+        if (this.endpoint === "/chat/") {
+          return (window.location.href = "/chat");
+        }
+
+        await this.updateDates();
       }
     }
-    }
+
     setTimeout(async () => {
       const users = await allUsersOnService();
       this.users = users.data;

@@ -1,5 +1,8 @@
 <template>
-  <div>ERROR 404</div>
+  <div id="error">
+    <h1>ERROR 404!</h1>
+    <h3>Va para o menu inicial <RouterLink to="/chat">aqui</RouterLink></h3>
+  </div>
 </template>
 
 <script>
@@ -13,5 +16,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+
+#error {
+  text-align: center;
+  margin-top: 200px;
 }
 </style>

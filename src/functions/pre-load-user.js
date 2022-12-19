@@ -1,7 +1,6 @@
 import User from "@/services/user.service";
 
 export default async function (authUser) {
-
   if (!authUser) {
     return;
   }
