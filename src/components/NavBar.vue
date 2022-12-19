@@ -34,7 +34,6 @@ export default {
   methods: {
     logoutUser() {
       cookies.remove("auth_user");
-
       window.location.href = "/chat";
     },
   },

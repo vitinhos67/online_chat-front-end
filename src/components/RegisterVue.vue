@@ -136,8 +136,9 @@ input {
   border-radius: 8px;
   background: #ddd;
   color: black;
-  width: 80px;
-
+  width: 90px;
+  padding-right: 60px;
+  font-size: 10px;
   transition: all 1s;
 }
 

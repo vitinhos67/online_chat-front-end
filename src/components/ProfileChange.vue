@@ -7,7 +7,7 @@
             <div class="box-input">
               <h1>Adicione dados adicionais a sua conta.</h1>
               <br />
-              <span class="subtitle">Description:</span>
+              <span class="subtitle">Descrição:</span>
               <br />
               <input type="text" name="description" v-model="description" />
               <br />
