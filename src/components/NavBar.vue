@@ -22,20 +22,27 @@
 </template>
 
 <script>
+import cookies from "vue-cookies";
+
 export default {
   data() {
     return {
-      user: localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user")).user
-        : "",
+      user: ''
     };
   },
+  props: ['User'],
   methods: {
     logoutUser() {
-      localStorage.removeItem("user");
+      cookies.remove("auth_user");
       window.location.reload();
     },
   },
+  created(){
+   
+    if(this.User) {
+      this.user = this.User
+    }
+  }
 };
 </script>
 
@@ -119,3 +126,4 @@ a {
   text-decoration: none;
 }
 </style>
+Property "User" was accessed during render but is not defined on instance.

@@ -23,12 +23,11 @@
 <script>
 import axios from "axios";
 import $ from "jquery";
+import cookies from "vue-cookies";
 export default {
   data() {
     return {
-      user: localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user")).user
-        : "",
+      user: cookies.get("user") ? cookies.get("user") : "",
       description: "",
       href_user_chat: (id) => `/chat/${id}`,
     };
@@ -45,8 +44,10 @@ export default {
         method: "post",
         url: "http://localhost:3000/add/description",
         data: {
-          id: this.user.id,
           description: this.description,
+        },
+        headers: {
+          Authorization: `Bearer ${this.user.access_token}`,
         },
       });
 

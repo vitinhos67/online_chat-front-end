@@ -8,7 +8,6 @@
             type="text"
             placeholder="Buscar por usuario..."
           />
-
           <br />
           <h3 class="users-conected">Usuarios conectados:</h3>
         </div>
@@ -54,7 +53,7 @@
     <div class="messages">
       <div class="box-messages" id="remove-messages">
         <div v-if="user">
-          <p style="margin: 5px; color: green;">Você esta conectado.</p>
+          <p style="margin: 5px; color: green">Você esta conectado.</p>
         </div>
         <div class="buttons-link" v-else>
           <h1 class="login-message-h1">
@@ -95,7 +94,9 @@ import $ from "jquery";
 import socket from "@/services/socketio.service";
 import allUsersOnService from "@/services/allUsersOn.service";
 import restoreMessages from "../services/load-messages-users.service";
-import find_userService from "@/services/find_user.service";
+import User from "@/services/user.service";
+import cookies from "vue-cookies";
+
 
 socket.on("receivedMessage", (data) => {
   const element = `<div class='content' id='chat-message-with-${data.from_id}'>
@@ -109,23 +110,23 @@ socket.on("receivedMessage", (data) => {
 export default {
   name: "chatHome",
   components: {},
-  props: ["router"],
+  props: ['router', 'User'],
 
   data() {
     return {
       message: "",
       href_user_chat: (id) => `/chat/${id}`,
-      user: localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user")).user
-        : "",
+      user: '',
       users: [],
       connectedWith: "null",
+      auth_user: cookies.get("auth_user"),
     };
   },
   computed: {},
   methods: {
     onSubmit(e) {
       e.preventDefault();
+      
       this.sendMessageForUser(this.message);
       this.renderMessage({
         from_username: this.user.username,
@@ -133,16 +134,18 @@ export default {
         from_id: this.connectedWith,
       });
     },
+    
     async updateConnectWith() {
       const regex = /[/]chat[/]([1-9]*)/gi;
 
       const connected_with_id_user = regex.exec(this.$route.fullPath)[1];
-      const connected_with_user = await find_userService(
-        connected_with_id_user
-      );
+
+      const connected_with_user = await User.find(connected_with_id_user);
+      
       if (!connected_with_id_user) {
-        return;
+        window.location.href('/');
       }
+      
       this.connectedWith = connected_with_user;
     },
 
@@ -191,13 +194,20 @@ export default {
       this.loadMessages();
     },
   },
-  async mounted() {
-    if (this.user) {
+  async created() {
+    
+    if(this.User) {
+      this.user = this.User
+    
+
+      if (this.user) {
       socket.emit("connectionUser", this.user);
+      
       if (this.$route.fullPath !== "/") {
         await this.updateConnectWith();
-        await this.loadMessages()
+        await this.loadMessages();
       }
+    }
     }
     setTimeout(async () => {
       const users = await allUsersOnService();

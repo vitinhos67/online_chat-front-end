@@ -29,6 +29,7 @@
 <script>
 import login from "../services/login.service";
 
+import cookies from "vue-cookies";
 export default {
   data() {
     return {
@@ -45,16 +46,15 @@ export default {
           return;
         }
 
-        const result = await login({
+        const authorization = await login({
           password: this.password,
           email: this.email,
         });
 
-        if (result.statusCode !== 200)
+        if (authorization.statusCode !== 200)
           throw new Error("Usuario invalido ou um erro aconteceu");
+        cookies.set("auth_user", authorization.user);
 
-        const dataToJSON = JSON.stringify(result);
-        localStorage.setItem("user", dataToJSON);
         window.location.href = "/";
       } catch (error) {
         console.log(error);
