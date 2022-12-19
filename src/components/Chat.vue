@@ -269,13 +269,13 @@ body {
 }
 
 .description-box {
-  width: 300px;
+  width: 360px;
   height: 50%;
 
-  background-color: #d7d5d535;
+  background-color: #eae8e8;
   padding: 10px;
   border-radius: 5px;
-  color: black;
+  color: rgba(0, 0, 0, 0.884);
 }
 
 .users {
@@ -293,7 +293,7 @@ body {
 }
 
 .user {
-  width: 400px;
+  width: 390px;
   height: 160px;
   background-color: #f6f6f6;
   padding: 10px;
