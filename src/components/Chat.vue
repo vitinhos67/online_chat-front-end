@@ -152,7 +152,7 @@ export default {
       const regex = /[/]chat[/]([1-9]*)/gi;
       const id_for_user = regex.exec(this.endpoint);
 
-      socket.emit("messageBetweenUsers", {
+      socket.emit("userSendMessage", {
         for_username: this.connectedWith.username,
         from_username: this.user.username,
         message,
