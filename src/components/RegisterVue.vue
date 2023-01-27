@@ -44,13 +44,14 @@ export default {
   components: {},
   methods: {
     async onSubmit(e) {
-      e.preventDefault();
+      try {
+        e.preventDefault();
       if (!this.password || !this.username || !this.email) {
         alert("Por favor, verifique os dados");
         return;
       }
 
-      const response = await axios({
+      await axios({
         method: "POST",
         url: "http://localhost:3000/user",
         data: {
@@ -60,7 +61,15 @@ export default {
         },
       });
 
-      console.log(response);
+      window.location.href = '/login'
+      } catch (error) {
+        if(error) {
+          console.log(error)
+          return
+        }
+      }
+
+
     },
   },
 };
